@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Nexus Hardware</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <div class="icone">N</div>
+        <h1>Nexus Hardware</h1>
+    </div>
+</header>
+
+<section class="menu">
+    <div class="aba" onclick="trocarAba('inicio')">Início</div>
+    <div class="aba" onclick="trocarAba('monte')">Monte seu PC</div>
+    <div class="aba" onclick="trocarAba('hardware')">Hardware</div>
+    <div class="aba" onclick="trocarAba('perifericos')">Periféricos</div>
+    <div class="aba" onclick="trocarAba('login')">Login/Cadastro</div>
+</section>
+
+<main>
+
+<section id="inicio" class="conteudo ativo">
+    <div class="inicio-centro">
+        <h2>Bem-Vindo(a) à Nexus Hardware!</h2>
+        <p>Sua loja de PC favorita!</p>
+
+        <div class="avaliacoes">
+            <h3>Avaliações dos Clientes</h3>
+            <p>“Ótima experiência! Montei meu PC fácil!” ⭐⭐⭐⭐⭐</p>
+            <p>“Interface bonita e prática.” ⭐⭐⭐⭐</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 Nexus Hardware</p>
+    </footer>
+</section>
+
+<section id="monte" class="conteudo">
+    <h2>Monte seu PC</h2>
+
+    <select id="cpu">
+        <option value="">Selecione CPU</option>
+        <option>Intel</option>
+        <option>AMD</option>
+    </select><br><br>
+
+    <select id="gpu">
+        <option value="">Selecione GPU</option>
+        <option>RTX 3060</option>
+        <option>RTX 4060</option>
+        <option>RX 6600</option>
+    </select><br><br>
+
+    <select id="jogo">
+        <option value="">Selecione um jogo</option>
+        <option>CS2</option>
+        <option>GTA V</option>
+        <option>Fortnite</option>
+    </select><br><br>
+
+    <button onclick="simularFPS()">Simular FPS</button>
+    <p id="resultado"></p>
+</section>
+
+<section id="hardware" class="conteudo">
+    <h2>Hardware</h2>
+
+    <div class="card"><h3>RTX 4060</h3><p>R$ 2500</p><button onclick="adicionarAoCarrinho('RTX 4060')">Adicionar</button></div>
+    <div class="card"><h3>RTX 3060</h3><p>R$ 1800</p><button onclick="adicionarAoCarrinho('RTX 3060')">Adicionar</button></div>
+    <div class="card"><h3>Ryzen 5 5600</h3><p>R$ 800</p><button onclick="adicionarAoCarrinho('Ryzen 5 5600')">Adicionar</button></div>
+    <div class="card"><h3>Intel i5 12400F</h3><p>R$ 900</p><button onclick="adicionarAoCarrinho('Intel i5 12400F')">Adicionar</button></div>
+</section>
+
+<section id="perifericos" class="conteudo">
+    <h2>Periféricos</h2>
+
+    <div class="card"><h3>Teclado RGB</h3><p>R$ 250</p><button onclick="adicionarAoCarrinho('Teclado RGB')">Adicionar</button></div>
+    <div class="card"><h3>Mouse Gamer</h3><p>R$ 150</p><button onclick="adicionarAoCarrinho('Mouse Gamer')">Adicionar</button></div>
+    <div class="card"><h3>Headset</h3><p>R$ 300</p><button onclick="adicionarAoCarrinho('Headset')">Adicionar</button></div>
+    <div class="card"><h3>Mousepad</h3><p>R$ 80</p><button onclick="adicionarAoCarrinho('Mousepad')">Adicionar</button></div>
+</section>
+
+<section id="login" class="conteudo">
+    <h2>Login</h2>
+
+    <div id="login-box">
+        <input type="text" placeholder="Usuário"><br><br>
+        <input type="password" placeholder="Senha"><br><br>
+        <button>Entrar</button>
+    </div>
+
+    <div class="cadastro">
+        <p>Não tem uma conta?</p>
+        <button id="btn-abrir-cadastro" onclick="abrirCadastro()">Cadastrar</button>
+    </div>
+
+    <div id="cadastro-box" style="display:none; margin-top:20px;">
+        <input id="nome" type="text" placeholder="Nome"><br><br>
+        <input id="email" type="email" placeholder="Email"><br><br>
+        <input id="senha" type="password" placeholder="Senha"><br><br>
+        <button onclick="fazerCadastro()">Cadastrar</button>
+
+        <p id="msg-cadastro"></p>
+    </div>
+</section>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
