@@ -2,21 +2,21 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Nexus Hardware</title>
+    <title>Buildix</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
     <div class="logo">
-        <div class="icone">N</div>
-        <h1>Nexus Hardware</h1>
+        <div class="icone">B</div>
+        <h1>Buildix</h1>
     </div>
 </header>
 
 <section class="menu">
     <div class="aba" onclick="trocarAba('inicio')">Início</div>
-    <div class="aba" onclick="trocarAba('monte')">Monte seu PC</div>
+    <div class="aba" onclick="trocarAba('monte')">Buildix Match</div>
     <div class="aba" onclick="trocarAba('hardware')">Hardware</div>
     <div class="aba" onclick="trocarAba('perifericos')">Periféricos</div>
     <div class="aba" onclick="trocarAba('login')">Login/Cadastro</div>
@@ -26,8 +26,8 @@
 
 <section id="inicio" class="conteudo ativo">
     <div class="inicio-centro">
-        <h2>Bem-Vindo(a) à Nexus Hardware!</h2>
-        <p>Sua loja de PC favorita!</p>
+        <h2>Bem-Vindo(a) à Buildix!</h2>
+        <p>Sua plataforma inteligente para escolher o PC ideal!</p>
 
         <div class="avaliacoes">
             <h3>Avaliações dos Clientes</h3>
@@ -37,35 +37,39 @@
     </div>
 
     <footer>
-        <p>© 2026 Nexus Hardware</p>
+        <p>© 2026 Buildix</p>
     </footer>
 </section>
 
+<!-- 🔥 NOVA SEÇÃO BUILDIX MATCH -->
 <section id="monte" class="conteudo">
-    <h2>Monte seu PC</h2>
+    <h2>Análise Inteligente Buildix</h2>
 
-    <select id="cpu">
-        <option value="">Selecione CPU</option>
-        <option>Intel</option>
-        <option>AMD</option>
+    <p>Responda algumas perguntas para encontrarmos o PC ideal para você</p>
+
+    <select id="orcamento">
+        <option value="">Qual seu orçamento?</option>
+        <option value="baixo">Até R$3000</option>
+        <option value="medio">R$3000 - R$6000</option>
+        <option value="alto">Acima de R$6000</option>
     </select><br><br>
 
-    <select id="gpu">
-        <option value="">Selecione GPU</option>
-        <option>RTX 3060</option>
-        <option>RTX 4060</option>
-        <option>RX 6600</option>
+    <select id="uso">
+        <option value="">Qual o uso principal?</option>
+        <option value="gamer">Jogos</option>
+        <option value="trabalho">Trabalho</option>
+        <option value="estudo">Estudo</option>
     </select><br><br>
 
-    <select id="jogo">
-        <option value="">Selecione um jogo</option>
-        <option>CS2</option>
-        <option>GTA V</option>
-        <option>Fortnite</option>
+    <select id="prioridade">
+        <option value="">O que você prioriza?</option>
+        <option value="fps">Desempenho (FPS)</option>
+        <option value="qualidade">Qualidade gráfica</option>
     </select><br><br>
 
-    <button onclick="simularFPS()">Simular FPS</button>
-    <p id="resultado"></p>
+    <button onclick="gerarRecomendacao()">Analisar</button>
+
+    <div id="resultado-buildix"></div>
 </section>
 
 <section id="hardware" class="conteudo">
