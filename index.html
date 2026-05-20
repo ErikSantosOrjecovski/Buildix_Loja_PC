@@ -41,7 +41,6 @@
     </footer>
 </section>
 
-<!-- 🔥 NOVA SEÇÃO BUILDIX MATCH -->
 <section id="monte" class="conteudo">
     <h2>Análise Inteligente Buildix</h2>
 
@@ -54,7 +53,7 @@
         <option value="alto">Acima de R$6000</option>
     </select><br><br>
 
-    <select id="uso">
+    <select id="uso" onchange="atualizarPrioridade()">
         <option value="">Qual o uso principal?</option>
         <option value="gamer">Jogos</option>
         <option value="trabalho">Trabalho</option>
@@ -70,6 +69,13 @@
     <button onclick="gerarRecomendacao()">Analisar</button>
 
     <div id="resultado-buildix"></div>
+
+    <!-- 🤖 ROBÔ MELHORADO -->
+    <div id="robot" style="display:none; text-align:center; margin-top:20px;">
+        <div id="robot-emoji">🤖</div>
+        <p id="robot-text">Analisando sua build...</p>
+    </div>
+
 </section>
 
 <section id="hardware" class="conteudo">
