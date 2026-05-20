@@ -114,3 +114,38 @@ button {
 .btn-cadastro {
     margin-top: 10px;
 }
+
+#robot-emoji {
+    animation: pensar 1s infinite alternate;
+}
+
+@keyframes pensar {
+    0% { transform: scale(1); opacity: 0.7; }
+    100% { transform: scale(1.2); opacity: 1; }
+}
+
+/* 🤖 ROBÔ MELHORADO */
+#robot-emoji {
+    font-size: 120px;
+    animation: analisar 1.2s infinite ease-in-out;
+}
+
+@keyframes analisar {
+    0% { transform: scale(1) rotate(0deg); opacity: 0.7; }
+    25% { transform: scale(1.1) rotate(-5deg); }
+    50% { transform: scale(1.2) rotate(5deg); opacity: 1; }
+    75% { transform: scale(1.1) rotate(-5deg); }
+    100% { transform: scale(1) rotate(0deg); opacity: 0.7; }
+}
+
+#robot-text {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #00d4ff;
+    animation: piscar 1.5s infinite;
+}
+
+@keyframes piscar {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
