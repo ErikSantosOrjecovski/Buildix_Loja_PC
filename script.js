@@ -4,7 +4,6 @@ function trocarAba(id) {
     document.getElementById(id).classList.add("ativo");
 }
 
-// 🔥 NOVA FUNÇÃO BUILDIX
 function gerarRecomendacao() {
 
     const orcamento = document.getElementById("orcamento").value;
@@ -12,80 +11,82 @@ function gerarRecomendacao() {
     const prioridade = document.getElementById("prioridade").value;
 
     const resultado = document.getElementById("resultado-buildix");
+    const robot = document.getElementById("robot");
+    const robotText = document.getElementById("robot-text");
 
     if (!orcamento || !uso || !prioridade) {
         resultado.innerHTML = "Preencha todas as opções!";
         return;
     }
 
-    let perfil = "";
-    let pc = "";
-    let futuro = "";
+    robot.style.display = "block";
+    resultado.innerHTML = "";
 
-    if (orcamento === "baixo" && uso === "gamer") {
-        perfil = "Gamer Básico";
-        pc = "Ryzen 5 5600 + RX 6600";
-        futuro = "Em 2 anos: desempenho médio | Upgrade recomendado: GPU";
-    }
+    let mensagens = [
+        "🤖 Analisando peças...",
+        "⚙️ Calculando desempenho...",
+        "🧠 Pensando na melhor build...",
+        "💻 Otimizando configuração..."
+    ];
 
-    else if (orcamento === "medio" && uso === "gamer") {
-        perfil = "Gamer Intermediário";
-        pc = "i5 12400F + RTX 4060";
-        futuro = "Em 2 anos: alto desempenho | Upgrade leve necessário";
-    }
+    let i = 0;
+    let intervalo = setInterval(() => {
+        robotText.innerText = mensagens[i % mensagens.length];
+        i++;
+    }, 500);
 
-    else if (uso === "trabalho") {
-        perfil = "Workstation";
-        pc = "i5 + 16GB RAM + SSD";
-        futuro = "Estável por vários anos";
-    }
+    setTimeout(() => {
 
-    else {
-        perfil = "Usuário Casual";
-        pc = "Configuração básica equilibrada";
-        futuro = "Sem necessidade de upgrade imediato";
-    }
+        let perfil = "";
+        let pc = "";
+        let desempenho = "";
+        let futuro = "";
+        let explicacao = "";
 
-    resultado.innerHTML = `
-        <h3>Seu Perfil: ${perfil}</h3>
-        <p><strong>PC Recomendado:</strong> ${pc}</p>
-        <p><strong>Previsão de Futuro:</strong> ${futuro}</p>
-    `;
-}
+        if (uso === "gamer") {
 
-// Simulação FPS (mantida)
-function simularFPS() {
-    const cpu = document.getElementById("cpu").value;
-    const gpu = document.getElementById("gpu").value;
-    const jogo = document.getElementById("jogo").value;
-    const resultado = document.getElementById("resultado");
+            if (orcamento === "baixo") {
+                perfil = "Gamer Básico";
+                pc = "Ryzen 5 5600 + RX 6600";
+                desempenho = "CS2: ~160 FPS | GTA V: ~110 FPS | Fortnite: ~130 FPS";
+                futuro = "Roda jogos atuais no médio por 2 anos";
+                explicacao = "Bom pra começar no mundo gamer sem gastar muito.";
+            } else {
+                perfil = "Gamer Intermediário";
+                pc = "i5 12400F + RTX 4060";
+                desempenho = "CS2: ~240 FPS | GTA V: ~150 FPS | Fortnite: ~180 FPS";
+                futuro = "Alto desempenho por anos";
+                explicacao = "Roda tudo no alto com folga.";
+            }
 
-    if (!cpu || !gpu || !jogo) {
-        resultado.innerText = "Selecione tudo!";
-        return;
-    }
+        } else {
 
-    if (cpu === "Intel" && gpu === "RX 6600") {
-        resultado.innerText = "Configuração incompatível!";
-        return;
-    }
+            if (uso === "trabalho") {
+                perfil = "PC para Trabalho";
+                explicacao = "Ideal para produtividade e programas pesados.";
+            } else {
+                perfil = "PC para Estudos";
+                explicacao = "Perfeito para tarefas diárias.";
+            }
 
-    const fpsTabela = {
-        "Intel-RTX 3060-CS2": 180,
-        "Intel-RTX 4060-CS2": 240,
-        "AMD-RX 6600-CS2": 160,
-        "Intel-RTX 3060-GTA V": 120,
-        "Intel-RTX 4060-GTA V": 150,
-        "AMD-RX 6600-GTA V": 110,
-        "Intel-RTX 3060-Fortnite": 140,
-        "Intel-RTX 4060-Fortnite": 180,
-        "AMD-RX 6600-Fortnite": 130
-    };
+            pc = "i5 + 16GB RAM + SSD";
+            desempenho = "Rápido e sem travamentos";
+            futuro = "Durável por anos";
+        }
 
-    const chave = `${cpu}-${gpu}-${jogo}`;
-    const fps = fpsTabela[chave] || 100;
+        resultado.innerHTML = `
+            <h3>🎯 Perfil: ${perfil}</h3>
+            <p><strong>💻 PC:</strong> ${pc}</p>
+            <p><strong>⚡ Desempenho:</strong> ${desempenho}</p>
+            <p><strong>📈 Futuro:</strong> ${futuro}</p>
+            <p><strong>🤖 Explicação:</strong> ${explicacao}</p>
+        `;
 
-    resultado.innerText = `FPS estimado em ${jogo}: ${fps}`;
+        clearInterval(intervalo);
+        robotText.innerText = "✅ Análise concluída!";
+        robot.style.display = "none";
+
+    }, 2000);
 }
 
 // Carrinho
@@ -124,4 +125,23 @@ function fazerCadastro() {
 
     msg.innerText = "Cadastrado com sucesso!";
     msg.style.color = "green";
+}
+
+function atualizarPrioridade() {
+    const uso = document.getElementById("uso").value;
+    const prioridade = document.getElementById("prioridade");
+
+    prioridade.innerHTML = '<option value="">O que você prioriza?</option>';
+
+    if (uso === "gamer") {
+        prioridade.innerHTML += `
+            <option value="fps">Desempenho (FPS)</option>
+            <option value="qualidade">Qualidade gráfica</option>
+        `;
+    } else {
+        prioridade.innerHTML += `
+            <option value="velocidade">Velocidade</option>
+            <option value="multitarefa">Multitarefa</option>
+        `;
+    }
 }
