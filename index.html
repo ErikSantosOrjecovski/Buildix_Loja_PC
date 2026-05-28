@@ -8,24 +8,23 @@
 <body>
 
 <header>
-    <div class="logo">
+    <div class="logo" onclick="trocarAba('inicio')">
         <div class="icone">B</div>
         <h1>Buildix</h1>
     </div>
 </header>
 
 <section class="menu">
-    <div class="aba" onclick="trocarAba('inicio')">Início</div>
-    <div class="aba" onclick="trocarAba('monte')">Buildix Match</div>
-    <div class="aba" onclick="trocarAba('hardware')">Hardware</div>
-    <div class="aba" onclick="trocarAba('perifericos')">Periféricos</div>
-    <div class="aba" onclick="trocarAba('carrinho')">Loja 🛒</div>
+    <section class="menu">
+    <div class="aba" onclick="trocarAba('monte')">Buildix Match 🤖</div>
+    <div class="aba" onclick="trocarAba('loja')">Loja 🛒</div>
+    <div class="aba" onclick="trocarAba('coach')">Coach/Aulas 🎮</div>
     <div class="aba" onclick="trocarAba('login')">Login/Cadastro</div>
+</section>
 </section>
 
 <main>
 
-<!-- HOME -->
 <section id="inicio" class="conteudo ativo">
     <div class="inicio-centro">
         <h2>Bem-Vindo(a) à Buildix!</h2>
@@ -43,7 +42,6 @@
     </footer>
 </section>
 
-<!-- BUILDS -->
 <section id="monte" class="conteudo">
     <h2>Análise Inteligente Buildix</h2>
 
@@ -56,15 +54,10 @@
         <option value="alto">Acima de R$6000</option>
     </select><br><br>
 
-    <select id="uso" onchange="atualizarPrioridade()">
-        <option value="">Qual o uso principal?</option>
-        <option value="gamer">Jogos</option>
-        <option value="trabalho">Trabalho</option>
-        <option value="estudo">Estudo</option>
-    </select><br><br>
-
-    <select id="prioridade">
-        <option value="">O que você prioriza?</option>
+    <select id="uso">
+        <option value="">Qual seu estilo de jogo?</option>
+        <option value="fps">Competitivo (FPS alto)</option>
+        <option value="grafico">Qualidade Gráfica (Ultra)</option>
     </select><br><br>
 
     <button onclick="gerarRecomendacao()">Analisar</button>
@@ -75,9 +68,66 @@
         <div id="robot-emoji">🤖</div>
         <p id="robot-text">Analisando sua build...</p>
     </div>
+
+    <div id="resposta-ia" style="margin-top:20px;"></div>
 </section>
 
-<!-- HARDWARE -->
+<!-- LOJA -->
+<section id="loja" class="conteudo">
+
+    <h2>🛒 Loja Buildix</h2>
+
+    <h3>Hardware</h3>
+
+    <div class="card">
+        <h3>RTX 4060</h3>
+        <p>R$ 2500</p>
+        <button onclick="adicionarAoCarrinho('RTX 4060')">Adicionar</button>
+    </div>
+
+    <div class="card">
+        <h3>RTX 3060</h3>
+        <p>R$ 1800</p>
+        <button onclick="adicionarAoCarrinho('RTX 3060')">Adicionar</button>
+    </div>
+
+    <div class="card">
+        <h3>Ryzen 5 5600</h3>
+        <p>R$ 800</p>
+        <button onclick="adicionarAoCarrinho('Ryzen 5 5600')">Adicionar</button>
+    </div>
+
+    <hr>
+
+    <h3>🎧 Periféricos</h3>
+
+    <div class="card">
+        <h3>Teclado RGB</h3>
+        <p>R$ 250</p>
+        <button onclick="adicionarAoCarrinho('Teclado RGB')">Adicionar</button>
+    </div>
+
+    <div class="card">
+        <h3>Mouse Gamer</h3>
+        <p>R$ 150</p>
+        <button onclick="adicionarAoCarrinho('Mouse Gamer')">Adicionar</button>
+    </div>
+
+    <div class="card">
+        <h3>Headset</h3>
+        <p>R$ 300</p>
+        <button onclick="adicionarAoCarrinho('Headset')">Adicionar</button>
+    </div>
+
+    <hr>
+
+    <h3>🛒 Seu Carrinho</h3>
+
+    <div id="lista-carrinho"></div>
+    <h3 id="total-carrinho"></h3>
+
+</section>
+
 <section id="hardware" class="conteudo">
     <h2>Hardware</h2>
 
@@ -87,7 +137,6 @@
     <div class="card"><h3>Intel i5 12400F</h3><p>R$ 900</p><button onclick="adicionarAoCarrinho('Intel i5 12400F')">Adicionar</button></div>
 </section>
 
-<!-- PERIFERICOS -->
 <section id="perifericos" class="conteudo">
     <h2>Periféricos</h2>
 
@@ -97,7 +146,6 @@
     <div class="card"><h3>Mousepad</h3><p>R$ 80</p><button onclick="adicionarAoCarrinho('Mousepad')">Adicionar</button></div>
 </section>
 
-<!-- CARRINHO -->
 <section id="carrinho" class="conteudo">
     <h2>Seu Carrinho</h2>
 
@@ -105,7 +153,42 @@
     <h3 id="total-carrinho"></h3>
 </section>
 
-<!-- LOGIN / CADASTRO -->
+<!-- COACH / AULAS -->
+<section id="coach" class="conteudo">
+
+    <h2>🎮 Coach Gamer Buildix</h2>
+
+    <p>
+        Aprenda a melhorar seu desempenho competitivo,
+        otimizar FPS e configurar seus jogos.
+    </p>
+
+    <div class="card">
+        <h3>⚡ Como aumentar FPS no Fortnite</h3>
+        <p>
+            Configurações competitivas para reduzir input lag
+            e aumentar desempenho.
+        </p>
+    </div>
+
+    <div class="card">
+        <h3>🎯 Melhor sensibilidade para CS</h3>
+        <p>
+            Dicas de sensibilidade, DPI e precisão para competitivo.
+        </p>
+    </div>
+
+    <div class="card">
+        <h3>🖥️ Como escolher seu PC Gamer</h3>
+        <p>
+            Aprenda a diferença entre foco em FPS
+            e foco em qualidade gráfica.
+        </p>
+    </div>
+
+</section>
+
+<!-- LOGIN/CADASTRO-->
 <section id="login" class="conteudo">
     <h2>Login</h2>
 
@@ -120,21 +203,16 @@
         <button id="btn-abrir-cadastro" onclick="abrirCadastro()">Cadastrar</button>
     </div>
 
-    <!-- 🔥 CORREÇÃO AQUI -->
     <div id="cadastro-box" style="display:none; margin-top:20px;">
-
         <form onsubmit="fazerCadastro(event)">
-
             <input id="nome" type="text" placeholder="Nome"><br><br>
             <input id="email" type="email" placeholder="Email"><br><br>
             <input id="senha" type="password" placeholder="Senha"><br><br>
 
             <button type="submit">Cadastrar</button>
-
         </form>
 
         <p id="msg-cadastro"></p>
-
     </div>
 </section>
 

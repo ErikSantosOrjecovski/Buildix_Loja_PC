@@ -1,5 +1,5 @@
 // ============================
-// 🔹 CONTROLE DE ABAS (MANTIDO)
+// 🔹 CONTROLE DE ABAS
 // ============================
 function trocarAba(id) {
     document.querySelectorAll(".conteudo")
@@ -9,54 +9,7 @@ function trocarAba(id) {
 }
 
 // ============================
-// 🔹 BASE DE DADOS DAS BUILDS (MANTIDO)
-// ============================
-const builds = {
-    gamer: {
-        baixo: {
-            perfil: "Gamer Básico",
-            pc: "Ryzen 5 5600 + RX 6600",
-            desempenho: "CS2: ~160 FPS | GTA V: ~110 FPS | Fortnite: ~130 FPS",
-            futuro: "Roda jogos atuais no médio por 2 anos",
-            explicacao: "Boa entrada no mundo gamer."
-        },
-        medio: {
-            perfil: "Gamer Intermediário",
-            pc: "i5 12400F + RTX 4060",
-            desempenho: "CS2: ~240 FPS | GTA V: ~150 FPS | Fortnite: ~180 FPS",
-            futuro: "Alto desempenho por anos",
-            explicacao: "Ótimo custo-benefício."
-        },
-        alto: {
-            perfil: "Gamer Avançado",
-            pc: "Ryzen 7 + RTX 4070",
-            desempenho: "Tudo no ultra acima de 200 FPS",
-            futuro: "Preparado para futuros jogos",
-            explicacao: "Máquina de alto nível."
-        }
-    },
-    trabalho: {
-        geral: {
-            perfil: "PC para Trabalho",
-            pc: "i5 + 16GB RAM + SSD",
-            desempenho: "Rápido e estável",
-            futuro: "Durável por anos",
-            explicacao: "Ideal para produtividade."
-        }
-    },
-    estudo: {
-        geral: {
-            perfil: "PC para Estudos",
-            pc: "i5 + 8GB RAM + SSD",
-            desempenho: "Leve e eficiente",
-            futuro: "Bom por anos",
-            explicacao: "Perfeito para tarefas diárias."
-        }
-    }
-};
-
-// ============================
-// 🛒 CARRINHO (VERSÃO ORIGINAL)
+// 🛒 CARRINHO
 // ============================
 let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
 
@@ -121,92 +74,97 @@ function salvarCarrinho() {
 }
 
 // ============================
-// 🤖 GERAR RECOMENDAÇÃO (RESTAURADO)
+// 🤖 BUILDIX MATCH + IA
 // ============================
-function gerarRecomendacao() {
+async function gerarRecomendacao() {
 
     const orcamento = document.getElementById("orcamento").value;
     const uso = document.getElementById("uso").value;
-    const prioridade = document.getElementById("prioridade").value;
 
     const resultado = document.getElementById("resultado-buildix");
     const robot = document.getElementById("robot");
     const robotText = document.getElementById("robot-text");
+    const respostaIA = document.getElementById("resposta-ia");
 
-    if (!orcamento || !uso || !prioridade) {
+    if (!orcamento || !uso) {
         resultado.innerHTML = "⚠️ Preencha todas as opções!";
+        if (respostaIA) respostaIA.innerHTML = "";
         return;
     }
 
-    robot.style.display = "block";
     resultado.innerHTML = "";
+    if (respostaIA) respostaIA.innerHTML = "";
 
-    const mensagens = [
-        "🤖 Analisando peças...",
-        "⚙️ Calculando desempenho...",
-        "🧠 Pensando na build...",
-        "💻 Otimizando configuração..."
-    ];
+    if (robot && robotText) {
+        robot.style.display = "block";
+        robotText.innerText = "🤖 Analisando seu perfil gamer...";
+    }
 
-    let i = 0;
-    const intervalo = setInterval(() => {
-        robotText.innerText = mensagens[i % mensagens.length];
-        i++;
-    }, 500);
+    let perfil = "";
+    let pc = "";
+    let desempenho = "";
+    let explicacao = "";
 
-    setTimeout(() => {
+    if (uso === "fps") {
+        perfil = "Competitivo";
+        pc = "Ryzen 5 5600 + RTX 4060";
+        desempenho = "Foco em FPS alto, baixa latência e estabilidade.";
+        explicacao = "Ideal para jogadores competitivos que querem partidas rápidas, lisas e sem travamentos.";
+    }
 
-        let build;
+    if (uso === "grafico") {
+        perfil = "Qualidade Gráfica";
+        pc = "Ryzen 7 + RTX 4070";
+        desempenho = "Foco em gráficos no Ultra com FPS estável.";
+        explicacao = "Ideal para jogadores que querem aproveitar jogos bonitos, detalhados e sem engasgos.";
+    }
 
-        if (uso === "gamer") {
-            build = { ...builds.gamer[orcamento] };
+    setTimeout(async () => {
 
-            if (prioridade === "fps") {
-                build.pc += " + foco em FPS";
-                build.explicacao += " Priorizando taxa de quadros.";
+        resultado.innerHTML = `
+            <h3>🎯 Perfil: ${perfil}</h3>
+            <p><strong>💻 PC recomendado:</strong> ${pc}</p>
+            <p><strong>⚡ Desempenho:</strong> ${desempenho}</p>
+            <p><strong>🤖 Explicação:</strong> ${explicacao}</p>
+        `;
+
+        try {
+            const response = await fetch("http://localhost:3000/recomendar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ uso })
+            });
+
+            const data = await response.json();
+
+            if (respostaIA) {
+                respostaIA.innerHTML = `
+                    <h3>🤖 IA Buildix recomenda:</h3>
+                    <p>${data.resposta}</p>
+                `;
             }
 
-            if (prioridade === "qualidade") {
-                build.pc += " + gráficos ultra";
-                build.explicacao += " Priorizando qualidade visual.";
-            }
-
-        } else {
-
-            build = { ...builds[uso].geral };
-
-            if (prioridade === "velocidade") {
-                build.pc += " + SSD NVMe";
-                build.explicacao += " Sistema mais rápido.";
-            }
-
-            if (prioridade === "multitarefa") {
-                build.pc += " + 32GB RAM";
-                build.explicacao += " Melhor multitarefa.";
+        } catch (error) {
+            if (respostaIA) {
+                respostaIA.innerHTML = "⚠️ IA não respondeu. Verifique se o backend está rodando.";
             }
         }
 
-        resultado.innerHTML = `
-            <h3>🎯 Perfil: ${build.perfil}</h3>
-            <p><strong>💻 PC:</strong> ${build.pc}</p>
-            <p><strong>⚡ Desempenho:</strong> ${build.desempenho}</p>
-            <p><strong>📈 Futuro:</strong> ${build.futuro}</p>
-            <p><strong>🤖 Explicação:</strong> ${build.explicacao}</p>
-        `;
+        if (robot) {
+            robot.style.display = "none";
+        }
 
-        clearInterval(intervalo);
-        robotText.innerText = "✅ Concluído!";
-        robot.style.display = "none";
-
-    }, 2000);
+    }, 1500);
 }
 
 // ============================
-// 👤 CADASTRO (MELHORADO SEM QUEBRAR)
+// 👤 CADASTRO
 // ============================
 function fazerCadastro(event) {
 
-    event.preventDefault(); // 🔥 impede o reload
+    event.preventDefault();
 
     const nome = document.getElementById("nome").value.trim();
     const email = document.getElementById("email").value.trim();
@@ -242,7 +200,6 @@ function fazerCadastro(event) {
 }
 
 function abrirCadastro() {
-
     const box = document.getElementById("cadastro-box");
     const botao = document.getElementById("btn-abrir-cadastro");
 
@@ -251,30 +208,7 @@ function abrirCadastro() {
 }
 
 // ============================
-// 🔄 PRIORIDADE DINÂMICA (MANTIDO)
-// ============================
-function atualizarPrioridade() {
-
-    const uso = document.getElementById("uso").value;
-    const prioridade = document.getElementById("prioridade");
-
-    prioridade.innerHTML = '<option value="">O que você prioriza?</option>';
-
-    if (uso === "gamer") {
-        prioridade.innerHTML += `
-            <option value="fps">FPS</option>
-            <option value="qualidade">Qualidade gráfica</option>
-        `;
-    } else {
-        prioridade.innerHTML += `
-            <option value="velocidade">Velocidade</option>
-            <option value="multitarefa">Multitarefa</option>
-        `;
-    }
-}
-
-// ============================
-// 🚀 INICIALIZAÇÃO (MANTIDO)
+// 🚀 INICIALIZAÇÃO
 // ============================
 window.onload = () => {
     atualizarCarrinhoUI();
