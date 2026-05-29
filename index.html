@@ -15,12 +15,11 @@
 </header>
 
 <section class="menu">
-    <section class="menu">
     <div class="aba" onclick="trocarAba('monte')">Buildix Match 🤖</div>
     <div class="aba" onclick="trocarAba('loja')">Loja 🛒</div>
+    <div class="aba" onclick="trocarAba('pagamento')">Pagamento 💳</div>
     <div class="aba" onclick="trocarAba('coach')">Coach/Aulas 🎮</div>
     <div class="aba" onclick="trocarAba('login')">Login/Cadastro</div>
-</section>
 </section>
 
 <main>
@@ -52,6 +51,15 @@
         <option value="baixo">Até R$3000</option>
         <option value="medio">R$3000 - R$6000</option>
         <option value="alto">Acima de R$6000</option>
+    </select><br><br>
+
+    <select id="jogo">
+        <option value="">Qual jogo você quer rodar?</option>
+        <option value="fortnite">Fortnite</option>
+        <option value="cs2">CS2</option>
+        <option value="gta5">GTA V</option>
+        <option value="rdr2">Red Dead Redemption 2</option>
+        <option value="cyberpunk">Cyberpunk 2077</option>
     </select><br><br>
 
     <select id="uso">
@@ -125,6 +133,41 @@
 
     <div id="lista-carrinho"></div>
     <h3 id="total-carrinho"></h3>
+
+    <button onclick="trocarAba('pagamento')">Ir para Pagamento 💳</button>
+
+</section>
+
+<!-- PAGAMENTO -->
+<section id="pagamento" class="conteudo">
+
+    <h2>💳 Finalizar Compra</h2>
+
+    <div class="card">
+
+        <h3>📦 Dados para entrega</h3>
+
+        <input id="nome-cliente" type="text" placeholder="Seu nome"><br><br>
+        <input id="telefone" type="text" placeholder="Telefone"><br><br>
+        <input id="endereco" type="text" placeholder="Endereço"><br><br>
+
+        <select id="forma-pagamento">
+            <option value="">Forma de pagamento</option>
+            <option value="PIX">PIX</option>
+            <option value="Cartão">Cartão</option>
+            <option value="Boleto">Boleto</option>
+        </select><br><br>
+
+        <button onclick="finalizarPedido()">Finalizar Pedido</button>
+
+        <p id="mensagem-pedido"></p>
+
+    </div>
+
+    <div class="card">
+        <h3>🛒 Resumo do Pedido</h3>
+        <div id="resumo-pagamento"></div>
+    </div>
 
 </section>
 

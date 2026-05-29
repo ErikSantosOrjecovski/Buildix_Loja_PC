@@ -6,6 +6,9 @@ function trocarAba(id) {
         .forEach(sec => sec.classList.remove("ativo"));
 
     document.getElementById(id).classList.add("ativo");
+
+    atualizarCarrinhoUI();
+    atualizarResumoPagamento();
 }
 
 // ============================
@@ -22,6 +25,7 @@ function adicionarAoCarrinho(nome) {
     carrinho.push(item);
     salvarCarrinho();
     atualizarCarrinhoUI();
+    atualizarResumoPagamento();
 }
 
 function gerarPrecoFake(nome) {
@@ -48,6 +52,12 @@ function atualizarCarrinhoUI() {
     lista.innerHTML = "";
     let soma = 0;
 
+    if (carrinho.length === 0) {
+        lista.innerHTML = "<p>Seu carrinho está vazio.</p>";
+        total.innerText = "Total: R$ 0";
+        return;
+    }
+
     carrinho.forEach((item, index) => {
         soma += item.preco;
 
@@ -67,6 +77,7 @@ function removerItem(index) {
     carrinho.splice(index, 1);
     salvarCarrinho();
     atualizarCarrinhoUI();
+    atualizarResumoPagamento();
 }
 
 function salvarCarrinho() {
@@ -79,6 +90,7 @@ function salvarCarrinho() {
 async function gerarRecomendacao() {
 
     const orcamento = document.getElementById("orcamento").value;
+    const jogo = document.getElementById("jogo").value;
     const uso = document.getElementById("uso").value;
 
     const resultado = document.getElementById("resultado-buildix");
@@ -86,7 +98,7 @@ async function gerarRecomendacao() {
     const robotText = document.getElementById("robot-text");
     const respostaIA = document.getElementById("resposta-ia");
 
-    if (!orcamento || !uso) {
+    if (!orcamento || !jogo || !uso) {
         resultado.innerHTML = "⚠️ Preencha todas as opções!";
         if (respostaIA) respostaIA.innerHTML = "";
         return;
@@ -134,7 +146,7 @@ async function gerarRecomendacao() {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ uso })
+                body: JSON.stringify({ uso, jogo })
             });
 
             const data = await response.json();
@@ -194,6 +206,7 @@ function fazerCadastro(event) {
 
     const usuario = { nome, email, senha };
     localStorage.setItem("usuario", JSON.stringify(usuario));
+    localStorage.setItem("usuarioLogado", "true");
 
     msg.innerText = "✅ Conta criada com sucesso!";
     msg.style.color = "green";
@@ -208,8 +221,142 @@ function abrirCadastro() {
 }
 
 // ============================
+// 💳 PAGAMENTO
+// ============================
+function atualizarResumoPagamento() {
+
+    const resumo = document.getElementById("resumo-pagamento");
+
+    if (!resumo) return;
+
+    resumo.innerHTML = "";
+
+    if (carrinho.length === 0) {
+        resumo.innerHTML = "<p>Nenhum item no carrinho.</p>";
+        return;
+    }
+
+    let total = 0;
+
+    carrinho.forEach(item => {
+        total += item.preco;
+
+        resumo.innerHTML += `
+            <p>${item.nome} - R$ ${item.preco}</p>
+        `;
+    });
+
+    resumo.innerHTML += `
+        <hr>
+        <h3>Total: R$ ${total}</h3>
+    `;
+}
+
+async function finalizarPedido() {
+
+    const nome = document.getElementById("nome-cliente").value.trim();
+    const telefone = document.getElementById("telefone").value.trim();
+    const endereco = document.getElementById("endereco").value.trim();
+    const pagamento = document.getElementById("forma-pagamento").value;
+    const mensagem = document.getElementById("mensagem-pedido");
+
+    const usuarioCadastrado = JSON.parse(localStorage.getItem("usuario"));
+    const usuarioLogado = localStorage.getItem("usuarioLogado");
+
+    if (!usuarioCadastrado || usuarioLogado !== "true") {
+        mensagem.innerText = "⚠️ Para finalizar a compra, você precisa criar uma conta ou fazer login.";
+        mensagem.style.color = "red";
+
+        setTimeout(() => {
+            trocarAba("login");
+        }, 1800);
+
+        return;
+    }
+
+    const telefoneValido = /^\(?\d{2}\)?\s?9?\d{4}-\d{4}$/;
+
+    if (!nome || !telefone || !endereco || !pagamento) {
+        mensagem.innerText = "❗ Preencha todos os campos!";
+        mensagem.style.color = "red";
+        return;
+    }
+
+    if (nome.length < 3) {
+        mensagem.innerText = "❗ Digite um nome válido!";
+        mensagem.style.color = "red";
+        return;
+    }
+
+    if (!telefoneValido.test(telefone)) {
+        mensagem.innerText = "❗ Digite um telefone válido com DDD e tracinho. Ex: (41) 99999-9999";
+        mensagem.style.color = "red";
+        return;
+    }
+
+    if (endereco.length < 5) {
+        mensagem.innerText = "❗ Digite um endereço válido!";
+        mensagem.style.color = "red";
+        return;
+    }
+
+    if (carrinho.length === 0) {
+        mensagem.innerText = "❗ Seu carrinho está vazio!";
+        mensagem.style.color = "red";
+        return;
+    }
+
+    const pedido = {
+        cliente: nome,
+        telefone,
+        endereco,
+        pagamento,
+        usuario: usuarioCadastrado,
+        itens: carrinho,
+        data: new Date().toLocaleString("pt-BR")
+    };
+
+    mensagem.innerText = "⏳ Processando pedido...";
+    mensagem.style.color = "#00d4ff";
+
+    setTimeout(async () => {
+
+        try {
+            const response = await fetch("http://localhost:3000/pedido", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(pedido)
+            });
+
+            const data = await response.json();
+
+            mensagem.innerText = data.mensagem || "✅ Pedido realizado com sucesso!";
+            mensagem.style.color = "green";
+
+            carrinho = [];
+            salvarCarrinho();
+            atualizarCarrinhoUI();
+            atualizarResumoPagamento();
+
+            document.getElementById("nome-cliente").value = "";
+            document.getElementById("telefone").value = "";
+            document.getElementById("endereco").value = "";
+            document.getElementById("forma-pagamento").value = "";
+
+        } catch (error) {
+            mensagem.innerText = "⚠️ Não foi possível finalizar o pedido. Verifique se o backend está rodando.";
+            mensagem.style.color = "red";
+        }
+
+    }, 1800);
+}
+
+// ============================
 // 🚀 INICIALIZAÇÃO
 // ============================
 window.onload = () => {
     atualizarCarrinhoUI();
+    atualizarResumoPagamento();
 };
